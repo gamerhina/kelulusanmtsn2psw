@@ -87,6 +87,7 @@ class AdminController extends Controller
         }
         
         $validated['tanggal_lahir'] = $parsedDate;
+        $validated['keterangan_kelulusan'] = strtoupper($validated['keterangan_kelulusan']);
 
         // Use updateOrCreate if NISN is provided, otherwise just create
         if ($request->filled('nisn')) {
@@ -117,6 +118,7 @@ class AdminController extends Controller
         }
         
         $validated['tanggal_lahir'] = $parsedDate;
+        $validated['keterangan_kelulusan'] = strtoupper($validated['keterangan_kelulusan']);
         $student->update($validated);
 
         return back()->with('success', 'Data siswa berhasil diupdate.');

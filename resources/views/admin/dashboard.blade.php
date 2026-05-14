@@ -215,6 +215,16 @@
     table {
         min-width: 800px; /* Force table to have enough width to trigger internal scroll on mobile */
     }
+
+    th a {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        white-space: nowrap;
+        color: white !important;
+        text-decoration: none;
+        width: 100%;
+    }
 </style>
 
 <!-- Edit Modal -->
@@ -229,8 +239,8 @@
             <div class="form-group mb-2">
                 <label class="form-label">Status</label>
                 <select name="keterangan_kelulusan" id="edit_keterangan_kelulusan" class="form-control" required>
-                    <option value="Lulus">Lulus</option>
-                    <option value="Tidak Lulus">Tidak Lulus</option>
+                    <option value="LULUS">LULUS</option>
+                    <option value="TIDAK LULUS">TIDAK LULUS</option>
                 </select>
             </div>
             <div class="form-group mb-2"><label class="form-label">Kelas</label><input type="text" name="kelas" id="edit_kelas" class="form-control" required></div>
@@ -317,9 +327,9 @@
                         <div class="form-group mb-2"><input type="date" name="tanggal_lahir" class="form-control" required></div>
                         <div class="form-group mb-2">
                             <select name="keterangan_kelulusan" class="form-control" required>
-                                <option value="">Pilih Status</option>
-                                <option value="Lulus">Lulus</option>
-                                <option value="Tidak Lulus">Tidak Lulus</option>
+                                <option value="">PILIH STATUS</option>
+                                <option value="LULUS">LULUS</option>
+                                <option value="TIDAK LULUS">TIDAK LULUS</option>
                             </select>
                         </div>
                         <div class="form-group mb-2"><input type="text" name="kelas" class="form-control" placeholder="Kelas" required></div>
@@ -387,12 +397,12 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th><a href="{{ sortUrl('nama', $sortBy, $sortOrder, $perPage, $search) }}" style="color: white; text-decoration: none;">Nama {!! sortIcon('nama', $sortBy, $sortOrder) !!}</a></th>
-                            <th><a href="{{ sortUrl('tanggal_lahir', $sortBy, $sortOrder, $perPage, $search) }}" style="color: white; text-decoration: none;">Tgl Lahir {!! sortIcon('tanggal_lahir', $sortBy, $sortOrder) !!}</a></th>
-                            <th><a href="{{ sortUrl('keterangan_kelulusan', $sortBy, $sortOrder, $perPage, $search) }}" style="color: white; text-decoration: none;">Status {!! sortIcon('keterangan_kelulusan', $sortBy, $sortOrder) !!}</a></th>
-                            <th><a href="{{ sortUrl('kelas', $sortBy, $sortOrder, $perPage, $search) }}" style="color: white; text-decoration: none;">Kelas {!! sortIcon('kelas', $sortBy, $sortOrder) !!}</a></th>
-                            <th><a href="{{ sortUrl('nisn', $sortBy, $sortOrder, $perPage, $search) }}" style="color: white; text-decoration: none;">NISN {!! sortIcon('nisn', $sortBy, $sortOrder) !!}</a></th>
-                            <th><a href="{{ sortUrl('rata_rata', $sortBy, $sortOrder, $perPage, $search) }}" style="color: white; text-decoration: none;">Rata-rata {!! sortIcon('rata_rata', $sortBy, $sortOrder) !!}</a></th>
+                            <th><a href="{{ sortUrl('nama', $sortBy, $sortOrder, $perPage, $search) }}">Nama {!! sortIcon('nama', $sortBy, $sortOrder) !!}</a></th>
+                            <th><a href="{{ sortUrl('tanggal_lahir', $sortBy, $sortOrder, $perPage, $search) }}">Tgl Lahir {!! sortIcon('tanggal_lahir', $sortBy, $sortOrder) !!}</a></th>
+                            <th><a href="{{ sortUrl('keterangan_kelulusan', $sortBy, $sortOrder, $perPage, $search) }}">Status {!! sortIcon('keterangan_kelulusan', $sortBy, $sortOrder) !!}</a></th>
+                            <th><a href="{{ sortUrl('kelas', $sortBy, $sortOrder, $perPage, $search) }}">Kelas {!! sortIcon('kelas', $sortBy, $sortOrder) !!}</a></th>
+                            <th><a href="{{ sortUrl('nisn', $sortBy, $sortOrder, $perPage, $search) }}">NISN {!! sortIcon('nisn', $sortBy, $sortOrder) !!}</a></th>
+                            <th><a href="{{ sortUrl('rata_rata', $sortBy, $sortOrder, $perPage, $search) }}">Rata-rata {!! sortIcon('rata_rata', $sortBy, $sortOrder) !!}</a></th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -645,7 +655,7 @@
         
         document.getElementById('edit_nama').value = student.nama;
         document.getElementById('edit_tanggal_lahir').value = student.tanggal_lahir;
-        document.getElementById('edit_keterangan_kelulusan').value = student.keterangan_kelulusan;
+        document.getElementById('edit_keterangan_kelulusan').value = student.keterangan_kelulusan.toUpperCase();
         document.getElementById('edit_kelas').value = student.kelas;
         document.getElementById('edit_nisn').value = student.nisn || '';
         document.getElementById('edit_rata_rata').value = student.rata_rata || '';
