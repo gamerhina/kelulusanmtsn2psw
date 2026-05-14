@@ -4,19 +4,24 @@
 
 @section('content')
 <style>
-    /* Override body alignment for admin so it doesn't jump vertically */
+    /* Base Styles */
     body {
+        display: flex !important;
+        justify-content: center !important;
         align-items: flex-start !important;
         padding-top: 40px;
+        margin: 0;
     }
     .container {
         max-width: 1300px !important;
+        width: 100%;
+        margin: 0 auto !important;
+        padding: 20px;
     }
     .admin-layout {
         display: flex;
         gap: 30px;
         width: 100%;
-        margin: 0 auto;
         align-items: flex-start;
         min-height: 80vh;
     }
@@ -51,11 +56,11 @@
     }
     .admin-content {
         flex-grow: 1;
-        min-width: 0; /* Prevents flex blowout */
+        min-width: 0;
         background: var(--glass-bg);
         backdrop-filter: blur(10px);
         border-radius: 15px;
-        padding: 30px;
+        padding: 20px;
         box-shadow: var(--shadow);
     }
     .tab-pane {
@@ -84,6 +89,131 @@
         border-radius: 15px;
         width: 500px;
         box-shadow: var(--shadow);
+    }
+
+    /* Mobile Responsive Styles */
+    @media (max-width: 992px) {
+        .container {
+            width: 100% !important;
+            padding: 10px;
+        }
+        .admin-layout {
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            max-width: 100%;
+        }
+        .admin-sidebar {
+            width: 100%;
+            position: relative;
+            top: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 15px;
+        }
+        .admin-sidebar h2 {
+            width: 100%;
+            margin-bottom: 10px !important;
+            font-size: 1.2rem !important;
+        }
+        .admin-sidebar button {
+            flex: 1 1 calc(50% - 10px);
+            margin-bottom: 0;
+            padding: 10px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .admin-sidebar hr {
+            display: none;
+        }
+        .admin-sidebar form {
+            flex: 1 1 100%;
+        }
+        .admin-sidebar form button {
+            width: 100%;
+        }
+        .admin-content {
+            width: 100%;
+            min-width: 0;
+            padding: 15px;
+        }
+        .dashboard-grid {
+            grid-template-columns: 1fr !important;
+        }
+        .modal-content {
+            width: 95% !important;
+            margin: 10% auto !important;
+            padding: 20px !important;
+        }
+        .table-controls {
+            flex-direction: column;
+            align-items: stretch !important;
+        }
+        .table-controls > h3 {
+            margin-bottom: 10px !important;
+        }
+        .table-controls > div, .table-controls form {
+            width: 100%;
+            flex-direction: column;
+            align-items: stretch !important;
+        }
+        .table-controls input, .table-controls select {
+            width: 100% !important;
+        }
+        
+        /* Table Shrinking */
+        table {
+            font-size: 0.75rem;
+        }
+        th, td {
+            padding: 8px 5px !important;
+        }
+        .action-buttons {
+            flex-direction: column;
+            gap: 5px;
+            width: 100%;
+        }
+        .action-buttons button, .action-buttons form {
+            width: 100%;
+        }
+        .action-buttons form button {
+            width: 100%;
+        }
+        .btn-sm {
+            padding: 4px 6px;
+            font-size: 0.7rem;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .admin-sidebar button {
+            flex: 1 1 100%;
+        }
+        body {
+            padding-top: 10px;
+        }
+        .container {
+            padding: 10px !important;
+        }
+    }
+    
+    .table-responsive {
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin-top: 15px;
+        border-radius: 10px;
+    }
+    
+    table {
+        min-width: 800px; /* Force table to have enough width to trigger internal scroll on mobile */
     }
 </style>
 
@@ -123,7 +253,22 @@
         <form action="{{ route('admin.delete-all') }}" method="POST">
             @csrf
             <div class="form-group mb-4">
-                <input type="password" name="admin_password" class="form-control" placeholder="Masukkan Password Admin" required>
+                <div style="position: relative;">
+                    <input type="password" name="admin_password" id="admin_password" class="form-control" placeholder="Masukkan Password Admin" required style="padding-right: 45px;">
+                    <button type="button" onclick="togglePasswordVisibility('admin_password', 'eye-admin-visible', 'eye-admin-hidden')" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #6B7280; padding: 5px; display: flex; align-items: center; justify-content: center;">
+                        <span id="eye-admin-visible">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 20px; height: 20px;">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                            </svg>
+                        </span>
+                        <span id="eye-admin-hidden" style="display: none;">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 20px; height: 20px;">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" />
+                            </svg>
+                        </span>
+                    </button>
+                </div>
             </div>
             <div style="display: flex; gap: 10px;">
                 <button type="submit" class="btn btn-danger" style="background: #991B1B;">Hapus Permanen</button>
@@ -162,8 +307,8 @@
 
         <!-- TAB DATA KELULUSAN -->
         <div id="tab-data" class="tab-pane active">
-            <h1 class="title mb-4">Kelola Data Kelulusan</h1>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px;">
+            <h2 style="margin-bottom: 20px; font-size: 1.5rem;">Kelola Data Kelulusan</h2>
+            <div class="dashboard-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px;">
                 <div style="background: rgba(255,255,255,0.5); padding: 20px; border-radius: 10px;">
                     <h3 style="margin-bottom: 15px;">Tambah Data Manual</h3>
                     <form action="{{ route('admin.store') }}" method="POST">
@@ -195,7 +340,7 @@
                 </div>
             </div>
             <div class="table-responsive">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 15px;">
+                <div class="table-controls" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 15px;">
                     <h3 style="margin: 0;">Data Siswa</h3>
                     
                     <div style="display: flex; gap: 15px; align-items: center;">
@@ -286,7 +431,7 @@
 
         <!-- TAB PENGATURAN AKUN -->
         <div id="tab-akun" class="tab-pane">
-            <h1 class="title mb-4">Pengaturan Akun Admin</h1>
+            <h2 style="margin-bottom: 20px; font-size: 1.5rem;">Pengaturan Akun Admin</h2>
             <div style="background: rgba(255,255,255,0.5); padding: 20px; border-radius: 10px; max-width: 500px;">
                 <form action="{{ route('admin.profile.update') }}" method="POST">
                     @csrf
@@ -296,11 +441,41 @@
                     </div>
                     <div class="form-group mb-2">
                         <label class="form-label">Password Baru (Opsional)</label>
-                        <input type="password" name="password" class="form-control" placeholder="Biarkan kosong jika tidak diubah">
+                        <div style="position: relative;">
+                            <input type="password" name="password" id="new_password" class="form-control" placeholder="Biarkan kosong jika tidak diubah" style="padding-right: 45px;">
+                            <button type="button" onclick="togglePasswordVisibility('new_password', 'eye-new-visible', 'eye-new-hidden')" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #6B7280; padding: 5px; display: flex; align-items: center; justify-content: center;">
+                                <span id="eye-new-visible">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 20px; height: 20px;">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                    </svg>
+                                </span>
+                                <span id="eye-new-hidden" style="display: none;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 20px; height: 20px;">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" />
+                                    </svg>
+                                </span>
+                            </button>
+                        </div>
                     </div>
                     <div class="form-group mb-2">
                         <label class="form-label">Konfirmasi Password Baru</label>
-                        <input type="password" name="password_confirmation" class="form-control" placeholder="Ulangi password baru">
+                        <div style="position: relative;">
+                            <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" placeholder="Ulangi password baru" style="padding-right: 45px;">
+                            <button type="button" onclick="togglePasswordVisibility('password_confirmation', 'eye-conf-visible', 'eye-conf-hidden')" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #6B7280; padding: 5px; display: flex; align-items: center; justify-content: center;">
+                                <span id="eye-conf-visible">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 20px; height: 20px;">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                    </svg>
+                                </span>
+                                <span id="eye-conf-hidden" style="display: none;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 20px; height: 20px;">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" />
+                                    </svg>
+                                </span>
+                            </button>
+                        </div>
                     </div>
                     <button type="submit" class="btn btn-primary mt-2">Update Profil</button>
                 </form>
@@ -309,7 +484,7 @@
 
         <!-- TAB TAMPILAN & SLIDER -->
         <div id="tab-tampilan" class="tab-pane">
-            <h1 class="title mb-4">Pengaturan Tampilan & Slider</h1>
+            <h2 style="margin-bottom: 20px; font-size: 1.5rem;">Pengaturan Tampilan & Slider</h2>
             <div style="background: rgba(255,255,255,0.5); padding: 20px; border-radius: 10px;">
                 <form action="{{ route('admin.settings.update') }}" method="POST" enctype="multipart/form-data">
                     @csrf
@@ -409,6 +584,22 @@
 </div>
 
 <script>
+    function togglePasswordVisibility(inputId, visibleIconId, hiddenIconId) {
+        const input = document.getElementById(inputId);
+        const eyeVisible = document.getElementById(visibleIconId);
+        const eyeHidden = document.getElementById(hiddenIconId);
+        
+        if (input.type === 'password') {
+            input.type = 'text';
+            eyeVisible.style.display = 'none';
+            eyeHidden.style.display = 'block';
+        } else {
+            input.type = 'password';
+            eyeVisible.style.display = 'block';
+            eyeHidden.style.display = 'none';
+        }
+    }
+
     function openTab(tabId) {
         document.querySelectorAll('.tab-pane').forEach(el => el.classList.remove('active'));
         document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
