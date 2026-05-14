@@ -14,12 +14,6 @@ export default defineConfig({
         tailwindcss(),
     ],
 
-    // ⬇️ INI KUNCI UTAMA (Konfigurasi Niagahoster)
-    build: {
-        outDir: 'build', 
-        emptyOutDir: true,
-    },
-
     server: {
         host: '0.0.0.0',
         cors: true,
